@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <assignments>
+        <name>Assign_Task_Fields</name>
+        <label>Assign Task Fields</label>
+        <assignmentItems>
+            <assignTo>Subject</assignTo>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>New Waste Bin Created: {!$Record.Name}</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignTo>WhatId</assignTo>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <description>Creates a task when a new waste bin is created.</description>
+    <label>Create Task for New Waste Bin</label>
+    <processMetadataValues>
+        <name>ObjectType</name>
+        <value>
+            <stringValue>Waste_Bin__c</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>TriggerType</name>
+        <value>
+            <stringValue>RecordAfterCreate</stringValue>
+        </value>
+    </processMetadataValues>
+    <actionCalls>
+        <name>Create_Task</name>
+        <label>Create Task</label>
+        <flowTransactionModel>
+            <name>Default</name>
+        </flowTransactionModel>
+        <inputParameters>
+            <name>fields</name>
+            <value>
+                <elementReference>Assign_Task_Fields</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Task</nameSegment>
+        <processMetadataValues>
+            <name>ObjectType</name>
+            <value>
+                <stringValue>Task</stringValue>
+            </value>
+        </processMetadataValues>
+        <actionType>Create</actionType>
+        <inputParameters>
+            <name>Subject</name>
+            <value>
+                <stringValue>New Waste Bin Created: {!$Record.Name}</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>WhatId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <start>
+        <description>Runs after a new Waste Bin record is created.</description>
+        <connector>
+            <targetReference>Create_Task</targetReference>
+        </connector>
+        <triggerType>RecordAfterCreate</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>
